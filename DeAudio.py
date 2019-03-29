@@ -38,4 +38,4 @@ scipy.io.wavfile.write('DE.wav', fs, data)
 
 end = time.time()
 ElspTime = (end-start)
-print('\n Sorry for taking %f sec from your life!', +ElspTime)
+print('\n Total time taken from your life: ', +ElspTime, 'sec')
