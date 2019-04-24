@@ -9,6 +9,7 @@ from tkinter.filedialog import askopenfilename
 from tkinter.ttk import *
 from tkinter import *
 from tkinter import filedialog
+import random 
 
 
 #TODO random.randint() from Enaudio.py 
@@ -71,23 +72,52 @@ def sixteen_encrypt():
 				#print(data.flags)
 				#print((a,b))
 				Time= numpy.linspace(0, len(data)/fs, num=len(data))
+				print(type(Time))
 				plt.figure(1)
 				plt.title('Original Signal Wave')
 				plt.plot(Time, data) 
 				plt.savefig('Original.png')
 
-				posdata = numpy.where(data >= 0, data, -1) #-25777 -(n)
-				negdata = numpy.where(data <= 0, data, 1) #25777 (n)
+				posdata = []
+				negdata = []
+				data_list = data.tolist()
+				posdata = data_list
+				negdata = data_list
+				posdata = numpy.array(posdata).astype(numpy.int16)
+				negdata = numpy.array(negdata).astype(numpy.int16)
+
+				#for posdata:
+				for z in range(len(data)):
+					for q in range(len(data[z])):
+						if(data[z][q]<0):
+							posdata[z][q] = random.randint(-30000, -20000)
+						elif(data[z][q]>0):
+							posdata[z][q] = data[z][q]
+						else:
+							posdata[z][q] = 0
+					
+				#for negdata:
+				for m in range(len(data)):
+					for r in range(len(data[r])):
+						if(data[m][r]>0):
+							negdata[m][r] = random.randint(20000, 30000)
+						elif(data[m][r]<0):
+							negdata[m][r] = data[m][r]
+						else:
+							negdata[m][r] = 0
+
+				#posdata = numpy.where(data >= 0, data, -1) #-25777 -(n)
+				#negdata = numpy.where(data <= 0, data, 1) #25777 (n)
 				print('The array made from the possitive datas: \n',+posdata)
 				print('The array made from the negativetive datas: \n',+negdata)
 
 				for i in range(0, tup[0]):
 					for j in range(0, tup[1]):
-						if(posdata[i][j]== -1 or negdata[i][j] < 0):
+						if(posdata[i][j]<0 or negdata[i][j] < 0):
 							x = negdata[i][j] 
 							x = ((pow(x,3)) % 25777)
 							negdata[i][j] = x
-						elif(posdata[i][j]>0 or negdata[i][j] == 1):
+						elif(posdata[i][j]>0 or negdata[i][j]>0):
 							x = posdata[i][j] 
 							x = ((pow(x,3)) % 25777)
 							posdata[i][j] = x
@@ -152,8 +182,31 @@ def sixteen_encrypt():
 				plt.plot(Time, data) 
 				plt.savefig('Original.png')
 				
-				posdata = numpy.where(data >= 0, data, -1)
-				negdata = numpy.where(data <= 0, data, 1)
+				posdata = []
+				negdata = []
+				data_list = data.tolist()
+				posdata = data_list
+				negdata = data_list
+				posdata = numpy.array(posdata).astype(numpy.int16)
+				negdata = numpy.array(negdata).astype(numpy.int16)
+				
+				#for posdata:
+				for z in range(len(data)):
+					if(data[z]<0):
+						posdata[z] = random.randint(-30000, -20000)
+					elif(data[z]>0):
+						posdata[z] = data[z]
+					else:
+						posdata[z] = 0
+				
+				#for negdata:
+				for m in range(len(data)):
+					if(data[m]>0):
+						negdata[m] = random.randint(20000, 30000)
+					elif(data[m]<0):
+						negdata[m] = data[m]
+					else:
+						negdata[m] = 0
 
 				for i in range(len(data)):
 					if(posdata[i]== -1 or negdata[i]< 0):
